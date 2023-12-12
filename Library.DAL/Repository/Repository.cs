@@ -1,12 +1,13 @@
 using System.Linq.Expressions;
 using Library.DAL.Contexts;
 using Library.DAL.Entities;
+using Library.DAL.Entities.Base;
 using Library.DAL.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Library.DAL.Repository;
 
-public abstract class Repository<T> : IRepository<T> where T : class
+public abstract class Repository<T> : IRepository<T> where T : BaseEntity<Guid>
 {
 
     protected readonly ApplicationDbContext _db;
@@ -47,9 +48,9 @@ public abstract class Repository<T> : IRepository<T> where T : class
         return query.FirstOrDefault();
     }
 
-    public void Add(T entity)
+    public T Add(T entity)
     {
-        _dbSet.Add(entity);
+        return _dbSet.Add(entity).Entity;
     }
 
     public void Delete(T entity)
