@@ -9,10 +9,10 @@ namespace Library.DAL.Repository;
 public abstract class Repository<T> : IRepository<T> where T : class
 {
 
-    protected readonly ApplicationDBContext _db;
+    protected readonly ApplicationDbContext _db;
     internal DbSet<T> _dbSet;
 
-    public Repository(ApplicationDBContext db)
+    public Repository(ApplicationDbContext db)
     {
         _db = db;
         _dbSet = _db.Set<T>();

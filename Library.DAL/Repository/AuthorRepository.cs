@@ -6,7 +6,7 @@ namespace Library.DAL.Repository;
 
 public class AuthorRepository : Repository<Author>, IAuthorRepository
 {
-    public AuthorRepository(ApplicationDBContext db) : base(db)
+    public AuthorRepository(ApplicationDbContext db) : base(db)
     {
     }
 

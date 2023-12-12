@@ -5,11 +5,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Library.DAL.Contexts;
 
-public class ApplicationDBContext :IdentityDbContext<User, IdentityRole<Guid>, Guid>
+public class ApplicationDbContext :IdentityDbContext<User, IdentityRole<Guid>, Guid>
 {
-    public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) :base(options){ }
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :base(options){ }
 
     public virtual DbSet<Author> Authors { get; set; }
+    public virtual DbSet<Subject> Subjects { get; set; }
+
     public virtual DbSet<Book> Books { get; set; }
     public virtual DbSet<ReaderFormulary> ReaderFormularies { get; set; }
+    
 }

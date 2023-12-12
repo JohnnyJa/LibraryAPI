@@ -6,7 +6,7 @@ namespace Library.DAL.Repository;
 
 public class ReaderFormularyRepository : Repository<ReaderFormulary>, IReaderFormularyRepository
 {
-    public ReaderFormularyRepository(ApplicationDBContext db) : base(db)
+    public ReaderFormularyRepository(ApplicationDbContext db) : base(db)
     {
     }
 

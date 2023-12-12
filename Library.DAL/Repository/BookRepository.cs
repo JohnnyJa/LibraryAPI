@@ -7,7 +7,7 @@ namespace Library.DAL.Repository;
 
 public class BookRepository : Repository<Book>, IBookRepository
 {
-    public BookRepository(ApplicationDBContext dbContext) : base(dbContext)
+    public BookRepository(ApplicationDbContext dbContext) : base(dbContext)
     {
         
     }
