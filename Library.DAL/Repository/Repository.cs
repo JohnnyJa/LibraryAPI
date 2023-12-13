@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Library.DAL.Repository;
 
-public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 {
     private readonly ApplicationDbContext _context;
     private readonly DbSet<TEntity> _table;
