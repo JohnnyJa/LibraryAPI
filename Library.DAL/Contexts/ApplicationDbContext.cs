@@ -11,7 +11,6 @@ public class ApplicationDbContext :IdentityDbContext<User, IdentityRole<Guid>, G
 
     public virtual DbSet<Author> Authors { get; set; }
     public virtual DbSet<Subject> Subjects { get; set; }
-
     public virtual DbSet<Book> Books { get; set; }
     public virtual DbSet<ReaderFormulary> ReaderFormularies { get; set; }
     
