@@ -17,147 +17,127 @@ public class RepositoryTest
     [Test]
     public void GetAuthor_ExistName_AuthorSuccess()
     {
-        var unit = new UnitOfWork(_factory.CreateFilledDbContext());
+        var repository = new Repository<Author>(_factory.CreateFilledDbContext());
 
-        var author = unit.Author.GetValueOrDefault(a => a.Name == "Author1");
+        var author = repository.FirstOrDefault(a => a.Name == "Author1");
         Assert.That(author!.Name, Is.EqualTo("Author1"));
     }
 
     [Test]
     public void GetAuthor_NotExistName_AuthorIsNull()
     {
-        var unit = new UnitOfWork(_factory.CreateFilledDbContext());
+        var repository = new Repository<Author>(_factory.CreateFilledDbContext());
 
-        var author = unit.Author.GetValueOrDefault(a => a.Name == "Author3");
+    
+        var author = repository.FirstOrDefault(a => a.Name == "Author3");
         Assert.That(author, Is.Null);
     }
-
+    
     [Test]
     public void GetAllAuthor_EmptyCondition_AuthorEnum()
     {
-        var unit = new UnitOfWork(_factory.CreateFilledDbContext());
-
-
-        var author = unit.Author.GetAll();
+        var repository = new Repository<Author>(_factory.CreateFilledDbContext());
+    
+        var author = repository.ToList();
         Assert.That(author.Count(), Is.EqualTo(2));
     }
-
+    
     [Test]
     public void AddAuthor_Author_Success()
     {
-        var unit = new UnitOfWork(_factory.CreateFilledDbContext());
+        var repository = new Repository<Author>(_factory.CreateFilledDbContext());
 
-
+    
+    
         var author = new Author()
         {
             Name = "Author4",
             Surname = "Author4"
         };
-
-        unit.Author.Add(author);
-        unit.Save();
-
-        var authors = unit.Author.GetAll();
+    
+        repository.Add(author);
+    
+        var authors = repository.ToList();
         Assert.That(authors.Count(), Is.EqualTo(3));
     }
     
     [Test]
     public void DeleteAuthor_AuthorExist_Success()
     {
-        var unit = new UnitOfWork(_factory.CreateAuthorFilledDbContext());
+        var repository = new Repository<Author>(_factory.CreateFilledDbContext());
         
-        var author = unit.Author.GetValueOrDefault(a => a.Surname == "Author1");
-
-        unit.Author.Delete(author!);
-        unit.Save();
-
-        var authors = unit.Author.GetAll();
+        var author = repository.FirstOrDefault(a => a.Surname == "Author1");
+    
+        repository.Delete(author!);
+    
+        var authors = repository.ToList();
         Assert.That(authors.Count(), Is.EqualTo(1));
     }
     
     [Test]
     public void DeleteRangeAuthor_AuthorList_Success()
     {
-        var unit = new UnitOfWork(_factory.CreateAuthorFilledDbContext());
-
-
-        var authorsBefore = unit.Author.GetAll();
-
-        unit.Author.DeleteRange(authorsBefore);
-        unit.Save();    
-
-        var authorsAfter = unit.Author.GetAll();
+        var repository = new Repository<Author>(_factory.CreateFilledDbContext());
+    
+    
+        var authorsBefore = repository.ToList();
+    
+        repository.DeleteRange(authorsBefore);
+    
+        var authorsAfter = repository.ToList();
         Assert.That(authorsAfter.Count(), Is.EqualTo(0));
     }
     
     [Test]
     public void DeleteAuthor_AuthorNotExist_Error()
     {
-        var unit = new UnitOfWork(_factory.CreateFilledDbContext());
+        var repository = new Repository<Author>(_factory.CreateFilledDbContext());
 
-
+    
+    
         var author = new Author
         {
             Name = "1",
             Surname = "q"
         };
-
+    
         Assert.Throws<DbUpdateConcurrencyException>(() =>
         {
-            unit.Author.Delete(author);
-            unit.Save();
-
+            repository.Delete(author);
+    
         });
         
-        var authors = unit.Author.GetAll();
+        var authors = repository.ToList();
         Assert.That(authors.Count(), Is.EqualTo(2));
     }
     
     [Test]
     public void UpdateAuthor_AuthorExist_Success()
     {
-        var unit = new UnitOfWork(_factory.CreateFilledDbContext());
-
-
-        var author = unit.Author.GetValueOrDefault(a => a.Surname == "Author1");
-
+        var repository = new Repository<Author>(_factory.CreateFilledDbContext());
+    
+    
+        var author = repository.FirstOrDefault(a => a.Surname == "Author1");
+    
         author!.Name = "Author3";
         author.Surname = "author3";
         
-        unit.Author.Update(author);
-        unit.Save();
-
-        author = unit.Author.GetValueOrDefault(a => a.Name == "Author3");
+        repository.Update(author);
+    
+        author = repository.FirstOrDefault(a => a.Name == "Author3");
         Assert.That(author!.Surname, Is.EqualTo("author3"));
     }
-
+    
     [Test]
     public void GetFormularyWithBooksAndAuthors_FormularyExistWithIncludeParam_FormularyWithBooksAndAuthors()
     {
-        var unit = new UnitOfWork(_factory.CreateFilledDbContext());
-        var formulary = unit.ReaderFormulary.GetValueOrDefault(a => a.Name == "Name1", includeProperties:"TakenBooks.Author");
+        var repository = new Repository<Author>(_factory.CreateFilledDbContext());
+        var author = repository.Include(a => a.Books).ThenInclude(b=>b.ReaderFormularies).FirstOrDefault(a => a.Name == "Author1");
         
         
-        Assert.That(formulary!.Name, Is.EqualTo("Name1"));
-        Assert.That(formulary!.TakenBooks.First().Name, Is.EqualTo("Book1"));
-        Assert.That(formulary!.TakenBooks.First().Author.Name, Is.EqualTo("Author1"));
+        Assert.That(author!.Name, Is.EqualTo("Author1"));
+        Assert.That(author.Books, Is.Not.Empty);
+        Assert.That(author.Books.FirstOrDefault().ReaderFormularies, Is.Not.Empty);
     }
 
-    [Test]
-    public void GetAllFormularyWithBooksAndAuthors_IncludeParam_FormularyEnumWithBooksAndAuthors()
-    {
-        var unit = new UnitOfWork(_factory.CreateFilledDbContext());
-        var formularies = unit.ReaderFormulary.GetAll(includeProperties: "TakenBooks.Author");
-        Assert.That(formularies.Count(), Is.EqualTo(2));
-        Assert.That(formularies.First().TakenBooks, Is.Not.Empty);
-        Assert.That(formularies.First().TakenBooks.First().Author, Is.Not.Null);
-    }
-
-    [Test]
-    public void GetAllBooks_WithoutIncludeParams_AllBooks()
-    {
-        var unit = new UnitOfWork(_factory.CreateFilledDbContext());
-        var books = unit.Book.GetAll();
-        Assert.That(books.Count(), Is.EqualTo(2));
-    }
 }
