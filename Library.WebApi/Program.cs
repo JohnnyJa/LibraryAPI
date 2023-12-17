@@ -1,6 +1,27 @@
+using System.Net.NetworkInformation;
+using Library.DAL.Contexts;
+using Library.DAL.Repository;
+using Library.DAL.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using Library.BLL.Commands.Books;
+using Library.Common.WebAPI.Profiles;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssemblyContaining<CreateBookRequestHandler>());
+builder.Services.AddAutoMapper(typeof(BookProfile));
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();

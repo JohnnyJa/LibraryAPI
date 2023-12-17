@@ -31,16 +31,22 @@ FROM Author;";
             new Author { Name = "Author1", Surname = "Author1" },
             new Author { Name = "Author2", Surname = "Author2" }
         };
+        
+        var subject = new[]
+        {
+            new Subject() { Name = "Subject1" },
+            new Subject() { Name = "Subject2" }
+        };
 
         var books = new[]
         {
             new Book()
             {
-                Name = "Book1", ISBN = "123", Author = authors[0]
+                Name = "Book1", ISBN = "123", Author = authors[0], Subject = subject[0]
             },
             new Book()
             {
-                Name = "Book2", ISBN = "1234", Author = authors[1]
+                Name = "Book2", ISBN = "1234", Author = authors[1], Subject = subject[1]
             }
         };
         

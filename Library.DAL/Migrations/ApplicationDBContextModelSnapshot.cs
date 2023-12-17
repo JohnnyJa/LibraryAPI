@@ -34,7 +34,7 @@ namespace Library.DAL.Migrations
 
                     b.HasIndex("TakenBooksId");
 
-                    b.ToTable("BookReaderFormulary");
+                    b.ToTable("BookReaderFormulary", (string)null);
                 });
 
             modelBuilder.Entity("Library.DAL.Entities.Author", b =>
@@ -53,7 +53,7 @@ namespace Library.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Authors");
+                    b.ToTable("Authors", (string)null);
                 });
 
             modelBuilder.Entity("Library.DAL.Entities.Book", b =>
@@ -85,7 +85,7 @@ namespace Library.DAL.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("Books");
+                    b.ToTable("Books", (string)null);
                 });
 
             modelBuilder.Entity("Library.DAL.Entities.ReaderFormulary", b =>
@@ -104,7 +104,7 @@ namespace Library.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ReaderFormularies");
+                    b.ToTable("ReaderFormularies", (string)null);
                 });
 
             modelBuilder.Entity("Library.DAL.Entities.Subject", b =>
@@ -119,7 +119,7 @@ namespace Library.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Subjects");
+                    b.ToTable("Subjects", (string)null);
                 });
 
             modelBuilder.Entity("Library.DAL.Entities.User", b =>
