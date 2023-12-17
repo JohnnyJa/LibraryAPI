@@ -5,7 +5,7 @@ using Library.DAL.Entities;
 using Library.DAL.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 
-namespace Library.BLL.Commands.Books;
+namespace Library.BLL.Handlers.Books;
 
 public class DeleteBookRequestHandler :RequestHandlerBase<DeleteBookRequest, Deleted>
 {
@@ -18,7 +18,7 @@ public class DeleteBookRequestHandler :RequestHandlerBase<DeleteBookRequest, Del
 
     protected override async Task<ErrorOr<Deleted>> HandleInternal(DeleteBookRequest request, CancellationToken cancellationToken)
     {
-        var book = await _repository.FirstOrDefaultAsync(b => b.Id == request.BookId, cancellationToken);
+        var book = await _repository.SingleOrDefaultAsync(b => b.Id == request.BookId, cancellationToken);
         if (book == null)
         {
             return Error.NotFound("Book with this id not exist");

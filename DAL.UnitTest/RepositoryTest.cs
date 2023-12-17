@@ -46,9 +46,7 @@ public class RepositoryTest
     public void AddAuthor_Author_Success()
     {
         var repository = new Repository<Author>(_factory.CreateFilledDbContext());
-
-    
-    
+        
         var author = new Author()
         {
             Name = "Author4",
@@ -137,7 +135,8 @@ public class RepositoryTest
         
         Assert.That(author!.Name, Is.EqualTo("Author1"));
         Assert.That(author.Books, Is.Not.Empty);
-        Assert.That(author.Books.FirstOrDefault().ReaderFormularies, Is.Not.Empty);
+        Assert.That(author.Books.FirstOrDefault()?.ReaderFormularies, Is.Not.Empty);
     }
+
 
 }

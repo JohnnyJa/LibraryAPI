@@ -23,10 +23,10 @@ public class GetAllBooksRequestHandler : RequestHandlerBase<GetAllBooksRequest, 
 
     protected override async Task<ErrorOr<List<BookResponse>>> HandleInternal(GetAllBooksRequest request, CancellationToken cancellationToken)
     {
-        var quaryable = _repository.Include(b=>b.Author)
-            .Include(b=>b.Subject)
-            .Include(b =>b.ReaderFormularies);
-        var books  = await quaryable.ToListAsync(cancellationToken);
+        var queryable = _repository.Include("Author")
+            .Include("Subject")
+            .Include("ReaderFormularies");
+        var books  = queryable.ToList();
         return _mapper.Map<List<BookResponse>>(books);
     }
 }
