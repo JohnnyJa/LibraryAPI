@@ -1,26 +1,24 @@
 using AutoMapper;
 using BLL.UnitTest.Mock;
-// using BLL.UnitTest.Mock;
-using Library.BLL.Handlers.Authors;
+using Library.BLL.Handlers.Subject;
+using Library.BLL.Handlers.Subjects;
 using Library.BLL.Requests.Author;
+using Library.BLL.Requests.Subject;
 using Library.DAL.Entities;
 using Library.DAL.Repository.IRepository;
 using Library.Mapping.DAL.Profiles;
-using MockQueryable.Moq;
-using Moq;
 
 namespace BLL.UnitTest;
 
-public class AuthorServiceTest
+public class SubjectServiceTest
 {
     private readonly IMapper _mapper;
-    private IRepository<Author> _repository;
-    public AuthorServiceTest()
+    private IRepository<Subject> _repository;
+    public SubjectServiceTest()
     {
         _mapper = new MapperConfiguration(cfg =>
         {
-            cfg.AddProfile(new AuthorProfile());
-            cfg.AddProfile(new BookProfile());
+            cfg.AddProfile(new SubjectProfile());
         }).CreateMapper();
     }
     
@@ -28,18 +26,17 @@ public class AuthorServiceTest
     public void Setup()
     {
         var mockFabric = new MockFabric();
-        _repository = mockFabric.GetAuthorRepository().Object;
+        _repository = mockFabric.GetSubjectRepository().Object;
     }
-
+    
     [Test]
-    public async Task CreateAuthor_Author_Success()
+    public async Task CreateSubject_Subject_Success()
     {
-        var request = new CreateAuthorRequest()
+        var request = new CreateSubjectRequest()
         {
-            Name = "Name3",
-            Surname = "Surname3"
+            Name = "Name3"
         };
-        var requestHandler = new CreateAuthorRequestHandler(_mapper, _repository);
+        var requestHandler = new CreateSubjectRequestHandler(_mapper, _repository);
         var result = await requestHandler.Handle(request, CancellationToken.None);
         Assert.IsFalse(result.IsError);
         Assert.That(result.Value.Name, Is.EqualTo(request.Name));
@@ -47,28 +44,27 @@ public class AuthorServiceTest
     }
     
     [Test]
-    public async Task GetAuthorById_Id_Author()
+    public async Task GetSubjectById_Id_Subject()
     {
-        var request = new GetAuthorByIdRequest()
+        var request = new GetSubjectByIdRequest()
         {
             Id = new Guid("00000000-0000-0000-0000-000000000000")
         };
-        var requestHandler = new GetAuthorByIdRequestHandler( _repository, _mapper);
+        var requestHandler = new GetSubjectByIdRequestHandler( _repository, _mapper);
         var result = await requestHandler.Handle(request, CancellationToken.None);
         Assert.IsFalse(result.IsError);
-        Assert.That(result.Value.Name, Is.EqualTo("Name"));
+        Assert.That(result.Value.Name, Is.EqualTo("Subject1"));
     }
     
     [Test]
-    public async Task UpdateAuthor_Author_Success()
+    public async Task UpdateSubject_Subject_Success()
     {
-        var request = new UpdateAuthorRequest()
+        var request = new UpdateSubjectRequest()
         {
             Id = new Guid("00000000-0000-0000-0000-000000000000"),
             Name = "Name3",
-            Surname = "Surname3"
         };
-        var requestHandler = new UpdateAuthorRequestHandler(_repository, _mapper);
+        var requestHandler = new UpdateSubjectRequestHandler(_repository, _mapper);
         var result = await requestHandler.Handle(request, CancellationToken.None);
         Assert.IsFalse(result.IsError);
         Assert.That(result.Value.Name, Is.EqualTo(request.Name));
@@ -76,13 +72,13 @@ public class AuthorServiceTest
     }
     
     [Test]
-    public async Task DeleteAuthor_Id_Success()
+    public async Task DeleteSubject_Id_Success()
     {
-        var request = new DeleteAuthorRequest()
+        var request = new DeleteSubjectRequest()
         {
             Id = new Guid("00000000-0000-0000-0000-000000000000")
         };
-        var requestHandler = new DeleteAuthorRequestHandler(_repository);
+        var requestHandler = new DeleteSubjectRequestHandler(_repository);
         var result = await requestHandler.Handle(request, CancellationToken.None);
         Assert.IsFalse(result.IsError);
         Assert.That(_repository.Count(), Is.EqualTo(1));
