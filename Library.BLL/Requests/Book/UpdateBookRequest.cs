@@ -9,10 +9,9 @@ public class UpdateBookRequest :IRequestBase<BookResponse>
     public Guid Id { get; set; }
     public string Name { get; set; }
     public string ISBN { get; set; }
-    
-    public E.Subject Subject { get; set; }
-    
     public int NumberOfCopies { get; set; }
-    public E.Author Author { get; set; }
-    public ICollection<E.ReaderFormulary> ReaderFormularies { get; set; }
+    
+    public Guid SubjectId { get; set; }
+    
+    public Guid AuthorId { get; set; }
 }
