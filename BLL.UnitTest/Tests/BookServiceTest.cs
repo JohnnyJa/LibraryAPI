@@ -5,6 +5,7 @@ using Library.BLL.Handlers.Books;
 using Library.BLL.Requests.Book;
 using Library.DAL.Entities;
 using Library.DAL.Repository.IRepository;
+using Library.Mapping;
 using Library.Mapping.DAL.Profiles;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +22,8 @@ public class BookServiceTest
     {
         _mapper = new MapperConfiguration(cfg =>
         {
-            cfg.AddProfile(new BookProfile());
+            cfg.AddProfile(new LibraryProfile());
+
         }).CreateMapper();
     }
     

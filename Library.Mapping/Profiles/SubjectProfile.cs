@@ -10,10 +10,6 @@ public class SubjectProfile : Profile
 {
     public SubjectProfile()
     {
-        CreateMap<Subject, SubjectResponse>();
-        CreateMap<Subject, SubjectDTO>();
-
-        CreateMap<CreateSubjectRequest, Subject>();
-        CreateMap<UpdateSubjectRequest, Subject>();
+        
     }
 }

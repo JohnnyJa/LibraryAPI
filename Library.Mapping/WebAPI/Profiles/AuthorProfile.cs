@@ -9,9 +9,7 @@ public class AuthorProfile : Profile
 {
     public AuthorProfile()
     {
-        CreateMap<AuthorResponse, AuthorDTO>();
-        CreateMap<CreateAuthorDTO, CreateAuthorRequest>();
-        CreateMap<UpdateAuthorDTO, UpdateAuthorRequest>();
+        
         // CreateMap<AuthorResponse, CreateAuthorRequest>();
     }
 }
