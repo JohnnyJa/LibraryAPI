@@ -30,7 +30,7 @@ public class AuthorController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<IActionResult> AddAuthor([FromBody] CreateAuthorRequest dto)
+    public async Task<IActionResult> AddAuthor([FromBody] CreateAuthorDTO dto)
     {
         var result = await _mediator.Send(_mapper.Map<CreateAuthorRequest>(dto));
         return result.Match<IActionResult>(
@@ -40,7 +40,7 @@ public class AuthorController : ControllerBase
     }
     
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAuthor(Guid id, [FromBody] UpdateAuthorRequest dto)
+    public async Task<IActionResult> UpdateAuthor(Guid id, [FromBody] UpdateAuthorDTO dto)
     {
         var request = _mapper.Map<UpdateAuthorRequest>(dto);
         request.Id = id;
