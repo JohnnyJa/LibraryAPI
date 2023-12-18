@@ -5,5 +5,5 @@ namespace Library.BLL.Requests.Book;
 
 public class GetBookByIdRequest :IRequestBase<BookResponse>
 {
-    public Guid BookId { get; set; }
+    public Guid Id { get; set; }
 }

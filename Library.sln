@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Mapping", "Library.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL.UnitTest", "BLL.UnitTest\BLL.UnitTest.csproj", "{A90A26AC-734B-40A7-BB5C-E728674BA5D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.UnitTest", "API.UnitTest\API.UnitTest.csproj", "{55B80D86-D05D-40C7-A769-43AC192F1CE2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{A90A26AC-734B-40A7-BB5C-E728674BA5D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A90A26AC-734B-40A7-BB5C-E728674BA5D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A90A26AC-734B-40A7-BB5C-E728674BA5D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55B80D86-D05D-40C7-A769-43AC192F1CE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55B80D86-D05D-40C7-A769-43AC192F1CE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55B80D86-D05D-40C7-A769-43AC192F1CE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55B80D86-D05D-40C7-A769-43AC192F1CE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
