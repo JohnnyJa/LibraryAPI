@@ -15,6 +15,8 @@ public class MockFabric
     private readonly List<Subject> _subjectEntities;
 
     private readonly List<Book> _bookEntities;
+    
+    private readonly List<ReaderFormulary> _formularyEntities;
     public MockFabric()
     {
         _authorEntities = new List<Author>()
@@ -66,6 +68,30 @@ public class MockFabric
                 Author = _authorEntities[1],
                 Subject = _subjectEntities[1],
                 ReaderFormularies = new List<ReaderFormulary>()
+            }
+        };
+
+        _formularyEntities = new List<ReaderFormulary>()
+        {
+            new ReaderFormulary()
+            {
+                Id = new Guid("00000000-0000-0000-0000-000000000000"),
+                Name = "ReaderName1",
+                Surname = "ReaderSurname1",
+                TakenBooks = new List<Book>()
+                {
+                    _bookEntities[0]
+                }
+            },
+            new ReaderFormulary()
+            {
+                Id = new Guid("00000000-0000-0000-0000-000000000001"),
+                Name = "ReaderName2",
+                Surname = "ReaderSurname2",
+                TakenBooks = new List<Book>()
+                {
+                    _bookEntities[1]
+                }
             }
         };
     }
@@ -161,4 +187,28 @@ public class MockFabric
         return repository;
         
     }
+
+    public Mock<IRepository<ReaderFormulary>> GetFormularyRepository()
+    {
+        var repository = GetRepository(_formularyEntities);
+        repository.Setup(x => x.AddAsync(It.IsAny<ReaderFormulary>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync((ReaderFormulary formulary, CancellationToken token) =>
+            {
+                _formularyEntities.Add(formulary);
+                return true;
+            });
+        repository.Setup(x => x.UpdateAsync(It.IsAny<ReaderFormulary>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync((ReaderFormulary formulary, CancellationToken token) =>
+            {
+                _formularyEntities[_formularyEntities.FindIndex(x => x.Id == formulary.Id)] = formulary;
+                return true;
+            });
+        repository.Setup(x => x.DeleteAsync(It.IsAny<ReaderFormulary>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync((ReaderFormulary formulary, CancellationToken token) =>
+            {
+                _formularyEntities.Remove(formulary);
+                return true;
+            });
+        return repository;
+    }  
 }
