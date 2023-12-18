@@ -18,7 +18,7 @@ public class FormularyServiceTest
     {
         _mapper = new MapperConfiguration(cfg =>
         {
-            cfg.AddProfile(new FormularyProfile());
+            cfg.AddProfile(new LibraryProfile());
         }).CreateMapper();
     }
     
@@ -103,7 +103,7 @@ public class FormularyServiceTest
         var request = new TakeBookByReaderRequest()
         {
             ReaderId = Guid.Parse("00000000-0000-0000-0000-000000000000"),
-            BookId = Guid.Parse("00000000-0000-0000-0000-000000000001")
+            BookIds = new List<Guid>(){ Guid.Parse("00000000-0000-0000-0000-000000000000")}
         };
         var requestHandler = new TakeBookByReaderRequestHandler( _repository, _booksRepository, _mapper);
         var result = await requestHandler.Handle(request, CancellationToken.None);
@@ -120,7 +120,7 @@ public class FormularyServiceTest
         var request = new ReturnBookByReaderRequest()
         {
             ReaderId = Guid.Parse("00000000-0000-0000-0000-000000000000"),
-            BookId = Guid.Parse("00000000-0000-0000-0000-000000000000")
+            BookIds = new List<Guid>(){ Guid.Parse("00000000-0000-0000-0000-000000000000")}
         };
         var requestHandler = new ReturnBookByReaderRequestHandler(_repository, _booksRepository, _mapper);
         var result = await requestHandler.Handle(request, CancellationToken.None);

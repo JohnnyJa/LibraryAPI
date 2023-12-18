@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using Library.BLL.Commands.Books;
 using Library.Common.WebAPI.Profiles;
+using Library.Mapping.DAL.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -13,7 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssemblyContaining<CreateBookRequestHandler>());
-builder.Services.AddAutoMapper(typeof(BookProfile));
+builder.Services.AddAutoMapper(typeof(LibraryProfile));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 var app = builder.Build();

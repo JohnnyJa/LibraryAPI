@@ -1,6 +1,6 @@
 using AutoMapper;
 using Library.BLL.Requests.Book;
-using Library.BLL.Services.Responses;
+using Library.BLL.Responses.Book;
 using Library.Common.Models.DTOs.Book;
 using Library.WebApi.Extensions;
 using MediatR;

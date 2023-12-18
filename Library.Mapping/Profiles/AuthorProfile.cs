@@ -10,9 +10,6 @@ public class AuthorProfile : Profile
 {
     public AuthorProfile()
     {
-        CreateMap<Author, AuthorResponse>();
-        CreateMap<Author, AuthorDTO>();
-        CreateMap<CreateAuthorRequest, Author>();
-        CreateMap<UpdateAuthorRequest, Author>();
+        
     }
 }

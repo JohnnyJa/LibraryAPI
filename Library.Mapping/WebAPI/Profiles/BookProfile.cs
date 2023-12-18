@@ -1,6 +1,6 @@
 using AutoMapper;
 using Library.BLL.Requests.Book;
-using Library.BLL.Services.Responses;
+using Library.BLL.Responses.Book;
 using Library.Common.Models.DTOs.Book;
 using Library.DAL.Entities;
 
@@ -10,10 +10,7 @@ public class BookProfile : Profile
 {
     public BookProfile()
     {
-        CreateMap<BookResponse,BookDTO>();
-        CreateMap<BookResponse,UpdateBookDTO>();
-        CreateMap<CreateBookDTO, CreateBookRequest>();
-        CreateMap<UpdateBookDTO, UpdateBookRequest>();
+        
     
     }
 }

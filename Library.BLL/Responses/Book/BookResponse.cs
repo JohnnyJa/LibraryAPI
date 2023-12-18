@@ -1,7 +1,6 @@
 using Library.Common.Models.DTOs;
-using Library.DAL.Entities;
 
-namespace Library.BLL.Services.Responses;
+namespace Library.BLL.Responses.Book;
 
 public class BookResponse
 {
