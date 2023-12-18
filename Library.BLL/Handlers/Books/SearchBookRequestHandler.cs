@@ -15,7 +15,7 @@ public class SearchBookRequestHandler : RequestHandlerBase<SearchBookRequest, Li
     private readonly IRepository<Book> _repository;
     private readonly IMapper _mapper;
 
-    public SearchBookRequestHandler(IMapper mapper, IRepository<Book> repository)
+    public SearchBookRequestHandler( IRepository<Book> repository,IMapper mapper)
     {
         _mapper = mapper;
         _repository = repository;

@@ -18,7 +18,7 @@ public class DeleteBookRequestHandler :RequestHandlerBase<DeleteBookRequest, Del
 
     protected override async Task<ErrorOr<Deleted>> HandleInternal(DeleteBookRequest request, CancellationToken cancellationToken)
     {
-        var book = await _repository.SingleOrDefaultAsync(b => b.Id == request.BookId, cancellationToken);
+        var book = await _repository.SingleOrDefaultAsync(b => b.Id == request.Id, cancellationToken);
         if (book == null)
         {
             return Error.NotFound("Book with this id not exist");

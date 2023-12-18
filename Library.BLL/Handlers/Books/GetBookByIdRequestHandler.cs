@@ -14,7 +14,7 @@ public class GetBookByIdRequestHandler : RequestHandlerBase<GetBookByIdRequest, 
     private readonly IRepository<Book> _repository;
     private readonly IMapper _mapper;
 
-    public GetBookByIdRequestHandler(IMapper mapper, IRepository<Book> repository)
+    public GetBookByIdRequestHandler( IRepository<Book> repository, IMapper mapper)
     {
         _mapper = mapper;
         _repository = repository;

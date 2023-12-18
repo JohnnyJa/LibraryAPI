@@ -6,7 +6,7 @@ namespace Library.BLL.Requests.Book;
 
 public class UpdateBookRequest :IRequestBase<BookResponse>
 {
-    public Guid BookId { get; set; }
+    public Guid Id { get; set; }
     public string Name { get; set; }
     public string ISBN { get; set; }
     

@@ -22,7 +22,7 @@ public class UpdateBookRequestHandler : RequestHandlerBase<UpdateBookRequest, Bo
 
     protected override async Task<ErrorOr<BookResponse>> HandleInternal(UpdateBookRequest request, CancellationToken cancellationToken)
     {
-        var book = await _repository.FirstOrDefaultAsync(b => b.Id == request.BookId, cancellationToken);
+        var book = await _repository.FirstOrDefaultAsync(b => b.Id == request.Id, cancellationToken);
         if (book == null)
         {
             return Error.NotFound("Book with this id does not exist");

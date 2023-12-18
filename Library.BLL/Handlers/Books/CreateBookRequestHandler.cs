@@ -16,7 +16,7 @@ public class CreateBookRequestHandler : RequestHandlerBase<CreateBookRequest, Bo
     private readonly IRepository<Book> _repository;
     private readonly IMapper _mapper;
 
-    public CreateBookRequestHandler(IMapper mapper, IRepository<Book> repository)
+    public CreateBookRequestHandler(IRepository<Book> repository, IMapper mapper)
     {
         _mapper = mapper;
         _repository = repository;

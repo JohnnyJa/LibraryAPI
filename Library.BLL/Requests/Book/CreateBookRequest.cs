@@ -12,5 +12,5 @@ public class CreateBookRequest : IRequestBase<BookResponse>
     public int NumberOfCopies { get; set; }
 
     public E.Subject Subject { get; set; }
-    public E.Author AuthorId { get; set; }
+    public E.Author Author { get; set; }
 }

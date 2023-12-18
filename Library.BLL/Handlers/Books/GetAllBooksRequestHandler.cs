@@ -26,7 +26,7 @@ public class GetAllBooksRequestHandler : RequestHandlerBase<GetAllBooksRequest, 
         var queryable = _repository.Include("Author")
             .Include("Subject")
             .Include("ReaderFormularies");
-        var books  = queryable.ToList();
+        var books  = await queryable.ToListAsync(cancellationToken);
         return _mapper.Map<List<BookResponse>>(books);
     }
 }
