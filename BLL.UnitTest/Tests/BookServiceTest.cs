@@ -6,6 +6,7 @@ using Library.BLL.Requests.Book;
 using Library.DAL.Entities;
 using Library.DAL.Repository.IRepository;
 using Library.Mapping.DAL.Profiles;
+using Microsoft.EntityFrameworkCore;
 
 namespace BLL.UnitTest;
 
@@ -13,6 +14,9 @@ public class BookServiceTest
 {
     private readonly IMapper _mapper;
     private IRepository<Book> _repository;
+    private IRepository<Author> _authorsRepository;
+    private IRepository<Subject> _subjectsRepository;
+
     public BookServiceTest()
     {
         _mapper = new MapperConfiguration(cfg =>
@@ -26,6 +30,9 @@ public class BookServiceTest
     {
         var mockFabric = new MockFabric();
         _repository = mockFabric.GetBookRepository().Object;
+        _authorsRepository = mockFabric.GetAuthorRepository().Object;
+        _subjectsRepository = mockFabric.GetSubjectRepository().Object;
+        
     }
 
     [Test]
@@ -36,22 +43,16 @@ public class BookServiceTest
             Name = "Name3",
             ISBN = "ISBN3",
             NumberOfCopies = 3,
-            Author = new Author()
-            {
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000000"),
-                Name = "Name",
-                Surname = "Surname"
-            },
-            Subject = new Subject()
-            {
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000000"),
-                Name = "Subject1",
-            }
+            AuthorId = Guid.Parse("00000000-0000-0000-0000-000000000000"),
+            SubjectId = Guid.Parse("00000000-0000-0000-0000-000000000000")
+
         };
-        var requestHandler = new CreateBookRequestHandler( _repository, _mapper);
+        var requestHandler = new CreateBookRequestHandler( _repository, _authorsRepository, _subjectsRepository, _mapper);
         var result = await requestHandler.Handle(request, CancellationToken.None);
         Assert.IsFalse(result.IsError);
         Assert.That(result.Value.Name, Is.EqualTo(request.Name));
+        Assert.That(_repository.Include(b => b.Author).Count(b=> b.Author.Name == "Name"), Is.EqualTo(2));
+
         Assert.That(_repository.Count(), Is.EqualTo(3));
     }
     
@@ -77,17 +78,10 @@ public class BookServiceTest
             Name = "Name3",
             ISBN = "ISBN3",
             NumberOfCopies = 3,
-            Author = new Author()
-            {
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000000"),
-                Name = "Name",
-                Surname = "Surname"
-            },
-            Subject = new Subject()
-            {
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000000"),
-                Name = "Subject1",
-            }
+            AuthorId = Guid.Parse("00000000-0000-0000-0000-000000000000"),
+               
+            SubjectId =  Guid.Parse("00000000-0000-0000-0000-000000000000"),
+                
         };
         var requestHandler = new UpdateBookRequestHandler(_repository, _mapper);
         var result = await requestHandler.Handle(request, CancellationToken.None);
@@ -116,19 +110,21 @@ public class BookServiceTest
         var requestHandler = new GetAllBooksRequestHandler(_repository, _mapper);
         var result = await requestHandler.Handle(request, CancellationToken.None);
         Assert.IsFalse(result.IsError);
-        Assert.That(_repository.Count(), Is.EqualTo(2));
+        Assert.That(result.Value.Count(), Is.EqualTo(2));
+        Assert.That(result.Value.FirstOrDefault(b => b.Name == "Book1"), Is.Not.Null);
+
     }
     
-    // [Test]
-    // public async Task SearchBookByName_Id_Success()
-    // {
-    //     var request = new SearchBookRequest()
-    //     {
-    //         Name = "Book1"
-    //     };
-    //     var requestHandler = new SearchBookByNameRequestHandler(_repository, _mapper);
-    //     var result = await requestHandler.Handle(request, CancellationToken.None);
-    //     Assert.IsFalse(result.IsError);
-    //     Assert.That(_repository.Count(), Is.EqualTo(2));
-    // }
+    [Test]
+    public async Task SearchBookByName_Name_Success()
+    {
+        var request = new SearchBookRequest()
+        {
+            keyword = "Subject1"
+        };
+        var requestHandler = new SearchBookRequestHandler(_repository, _mapper);
+        var result = await requestHandler.Handle(request, CancellationToken.None);
+        Assert.IsFalse(result.IsError);
+        Assert.That(result.Value.Count(), Is.EqualTo(1));
+    }
 }

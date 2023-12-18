@@ -76,6 +76,7 @@ public class MockFabric
         var repository = new Mock<IRepository<T>>();
         var mock = entities.BuildMock();
         repository.Setup(x => x.GetEnumerator()).Returns(mock.GetEnumerator());
+        repository.Setup(x => x.GetAsyncEnumerator(It.IsAny<CancellationToken>())).Returns(((IAsyncEnumerable<T>)mock).GetAsyncEnumerator());
         repository.Setup(x => x.Provider).Returns(mock.Provider);
         repository.Setup(x => x.Expression).Returns(mock.Expression);
         repository.Setup(x => x.ElementType).Returns(mock.ElementType);
@@ -138,12 +139,16 @@ public class MockFabric
         repository.Setup(x => x.AddAsync(It.IsAny<Book>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((Book book, CancellationToken token) =>
             {
+                book.Author = _authorEntities.SingleOrDefault(a => a.Id == book.AuthorId);
+                book.Subject = _subjectEntities.SingleOrDefault(s => s.Id == book.SubjectId);
                 _bookEntities.Add(book);
                 return true;
             });
         repository.Setup(x => x.UpdateAsync(It.IsAny<Book>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((Book book, CancellationToken token) =>
             {
+                book.Author = _authorEntities.SingleOrDefault(a => a.Id == book.AuthorId);
+                book.Subject = _subjectEntities.SingleOrDefault(s => s.Id == book.SubjectId);
                 _bookEntities[_bookEntities.FindIndex(x => x.Id == book.Id)] = book;
                 return true;
             });

@@ -15,7 +15,7 @@ public class SearchBookRequestHandler : RequestHandlerBase<SearchBookRequest, Li
     private readonly IRepository<Book> _repository;
     private readonly IMapper _mapper;
 
-    public SearchBookRequestHandler(IMapper mapper, IRepository<Book> repository)
+    public SearchBookRequestHandler( IRepository<Book> repository,IMapper mapper)
     {
         _mapper = mapper;
         _repository = repository;
@@ -25,21 +25,14 @@ public class SearchBookRequestHandler : RequestHandlerBase<SearchBookRequest, Li
     {
         IQueryable<Book> queryable = _repository.Include(b => b.Author)
             .Include(b => b.Subject)
-            .Include(b => b.ReaderFormularies);
-        if (request.BookIds != null)
-            queryable = queryable.Where(b => request.BookIds.Contains(b.Id));
-        
-        if (request.AuthorIds != null)
-            queryable = queryable.Where(b => request.AuthorIds.Contains(b.Author.Id));
-        
-        if (request.SubjectIds != null)
-            queryable = queryable.Where(b => request.SubjectIds.Contains(b.Subject.Id));
-        
-        if (request.Name != null)
-            queryable = queryable.Where(b => b.Name == request.Name);
-        
-        if (request.ISBN != null)
-            queryable = queryable.Where(b => b.ISBN == request.ISBN);
+            .Include(b => b.ReaderFormularies)
+            .Where(b => b.Name.Contains(request.keyword)
+                        || b.ISBN.Contains(request.keyword)
+                        || b.Author.Name.Contains(request.keyword)
+                        || b.Author.Surname.Contains(request.keyword)
+                        || b.Subject.Name.Contains(request.keyword));
+            
+            
         
         var books = await queryable.ToListAsync(cancellationToken);
         
