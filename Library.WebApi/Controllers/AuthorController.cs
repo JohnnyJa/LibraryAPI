@@ -38,4 +38,20 @@ public class AuthorController : ControllerBase
             error => BadRequest(error.ToErrorDTO())
         );
     }
+    
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateAuthor(Guid id, [FromBody] UpdateAuthorRequest dto)
+    {
+        var request = _mapper.Map<UpdateAuthorRequest>(dto);
+        request.Id = id;
+        var result = await _mediator.Send(request);
+        return _mapper.ToActionResult<AuthorResponse, AuthorDTO>(result);
+    }
+    
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteAuthor(Guid id)
+    {
+        var result = await _mediator.Send(new DeleteAuthorRequest { Id = id });
+        return result.ToActionResult();
+    }
 }

@@ -21,4 +21,18 @@ public static class ErrorOrExtensions
             value => new OkObjectResult(mapper.Map<TDest>(value)),
             errors => new BadRequestObjectResult(errors.ToErrorDTO()));
     }
+    
+    public static IActionResult ToActionResult(this ErrorOr<Deleted> errorOr)
+    {
+        return errorOr.Match<IActionResult>(
+            _ => new NoContentResult(),
+            errors => new BadRequestObjectResult(errors.ToErrorDTO()));
+    }
+    
+    public static IActionResult ToActionResult(this ErrorOr<Success> errorOr)
+    {
+        return errorOr.Match<IActionResult>(
+            _ => new NoContentResult(),
+            errors => new BadRequestObjectResult(errors.ToErrorDTO()));
+    }
 }
