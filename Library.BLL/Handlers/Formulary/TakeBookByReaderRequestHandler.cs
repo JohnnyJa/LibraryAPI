@@ -33,25 +33,23 @@ public class TakeBookByReaderRequestHandler : RequestHandlerBase<TakeBookByReade
         {
             return Error.NotFound("Formulary with this id does not exist");
         }
-        var book = await _booksRepository.Include(b => b.ReaderFormularies)
-            .SingleOrDefaultAsync(f => f.Id == request.BookId, cancellationToken);
         
-        if (book == null)
+        foreach (var bookId in request.BookIds)
         {
-            return Error.NotFound("Book with this id does not exist");
-        }
+            var book = await _booksRepository
+                .SingleOrDefaultAsync(f => f.Id == bookId, cancellationToken);
+            if (book == null)
+            {
+                return Error.NotFound("Book with this id does not exist");
+            }
 
-        if (formulary.TakenBooks.Count >= 10)
-        {
-            return Error.Failure("You can't take more than 10 books");
-        }
-
-        if (book.ReaderFormularies.Count >= book.NumberOfCopies)
-        {
-            return Error.Failure("This book is not available");
+            if (!formulary.TakenBooks.Contains(book))
+            {
+                return Error.NotFound("This book is not taken by this reader");
+            }
+            formulary.TakenBooks.Add(book);
         }
         
-        formulary.TakenBooks.Add(book);
         await _formulariesRepository.UpdateAsync(formulary, cancellationToken);
         return _mapper.Map<FormularyResponse>(formulary);
     }

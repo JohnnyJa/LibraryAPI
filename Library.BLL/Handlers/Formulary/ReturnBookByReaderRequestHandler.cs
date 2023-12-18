@@ -30,18 +30,22 @@ public class ReturnBookByReaderRequestHandler : RequestHandlerBase<ReturnBookByR
         {
             return Error.NotFound("Formulary with this id does not exist");
         }
-        var book = await _booksRepository
-            .SingleOrDefaultAsync(f => f.Id == request.BookId, cancellationToken);
-        if (book == null)
-        {
-            return Error.NotFound("Book with this id does not exist");
-        }
 
-        if (!formulary.TakenBooks.Contains(book))
+        foreach (var bookId in request.BookIds)
         {
-            return Error.NotFound("This book is not taken by this reader");
+            var book = await _booksRepository
+                .SingleOrDefaultAsync(f => f.Id == bookId, cancellationToken);
+            if (book == null)
+            {
+                return Error.NotFound("Book with this id does not exist");
+            }
+
+            if (!formulary.TakenBooks.Contains(book))
+            {
+                return Error.NotFound("This book is not taken by this reader");
+            }
+            formulary.TakenBooks.Remove(book);
         }
-        formulary.TakenBooks.Remove(book);
         await _formulariesRepository.UpdateAsync(formulary, cancellationToken);
         return _mapper.Map<FormularyResponse>(formulary);
     }
