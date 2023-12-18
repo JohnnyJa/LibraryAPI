@@ -7,7 +7,7 @@ namespace Library.WebApi.Controllers;
 
 [ApiController]
 [Route("api/books")]
-public class BookController
+public class BookController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;

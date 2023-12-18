@@ -26,7 +26,7 @@ public class GetBookByIdRequestHandler : RequestHandlerBase<GetBookByIdRequest, 
             .Include(b => b.Author)
             .Include(b => b.Subject)
             .Include(b => b.ReaderFormularies)
-            .FirstOrDefaultAsync(b => b.Id == request.BookId, cancellationToken);
+            .FirstOrDefaultAsync(b => b.Id == request.Id, cancellationToken);
         
         if (book == null)
         {
