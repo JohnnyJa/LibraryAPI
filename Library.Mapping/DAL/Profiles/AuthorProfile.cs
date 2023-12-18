@@ -11,5 +11,6 @@ public class AuthorProfile : Profile
     {
         CreateMap<Author, AuthorResponse>();
         CreateMap<CreateAuthorRequest, Author>();
+        CreateMap<UpdateAuthorRequest, Author>();
     }
 }

@@ -62,6 +62,18 @@ public class MockFabric
                 authorEntities.Add(author);
                 return true;
             });
+        repository.Setup(x => x.UpdateAsync(It.IsAny<Author>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync((Author author, CancellationToken token) =>
+            {
+                authorEntities[authorEntities.FindIndex(x => x.Id == author.Id)] = author;
+                return true;
+            });
+        repository.Setup(x => x.DeleteAsync(It.IsAny<Author>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync((Author author, CancellationToken token) =>
+            {
+                authorEntities.Remove(author);
+                return true;
+            });
         return repository;
     }
 }

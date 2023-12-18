@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Library.BLL.Handlers.Authors;
 
-public class GetAuthorByIdRequestHandler :RequestHandlerBase<GetAuthorByIdRequest, AuthorResponse>
+public class GetAuthorByIdRequestHandler : RequestHandlerBase<GetAuthorByIdRequest, AuthorResponse>
 {
     
     private readonly IRepository<Author> _repository;
