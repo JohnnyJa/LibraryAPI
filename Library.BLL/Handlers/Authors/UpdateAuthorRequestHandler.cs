@@ -25,7 +25,7 @@ public class UpdateAuthorRequestHandler : RequestHandlerBase<UpdateAuthorRequest
         var author = await _repository.FirstOrDefaultAsync(b => b.Id == request.Id, cancellationToken);
         if (author == null)
         {
-            return Error.NotFound("Book with this id does not exist");
+            return Error.NotFound("Author with this id does not exist");
         }
         
         _mapper.Map(request, author);
