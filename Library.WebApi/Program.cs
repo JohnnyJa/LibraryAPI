@@ -5,7 +5,6 @@ using Library.DAL.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using Library.BLL.Commands.Books;
-using Library.Common.WebAPI.Profiles;
 using Library.Mapping.DAL.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);

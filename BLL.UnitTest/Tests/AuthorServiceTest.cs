@@ -19,7 +19,7 @@ public class AuthorServiceTest
     {
         _mapper = new MapperConfiguration(cfg =>
         {
-            cfg.AddProfile(new AuthorProfile());
+            cfg.AddProfile(new LibraryProfile());
         }).CreateMapper();
     }
     
@@ -81,8 +81,10 @@ public class AuthorServiceTest
         {
             Id = new Guid("00000000-0000-0000-0000-000000000000")
         };
+        
         var requestHandler = new DeleteAuthorRequestHandler(_repository);
         var result = await requestHandler.Handle(request, CancellationToken.None);
+        
         Assert.IsFalse(result.IsError);
         Assert.That(_repository.Count(), Is.EqualTo(1));
     }

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Library.WebApi.Controllers;
 
 [ApiController]
-[Route("api/reader")]
+[Route("api/readers")]
 public class FormularyController : ControllerBase
 {
     private readonly IMediator _mediator;

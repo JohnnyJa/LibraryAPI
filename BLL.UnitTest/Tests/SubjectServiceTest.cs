@@ -18,7 +18,7 @@ public class SubjectServiceTest
     {
         _mapper = new MapperConfiguration(cfg =>
         {
-            cfg.AddProfile(new SubjectProfile());
+            cfg.AddProfile(new LibraryProfile());
         }).CreateMapper();
     }
     

@@ -36,16 +36,21 @@ public class TakeBookByReaderRequestHandler : RequestHandlerBase<TakeBookByReade
         
         foreach (var bookId in request.BookIds)
         {
-            var book = await _booksRepository
+            var book = await _booksRepository.Include(b => b.ReaderFormularies)
                 .SingleOrDefaultAsync(f => f.Id == bookId, cancellationToken);
             if (book == null)
             {
-                return Error.NotFound("Book with this id does not exist");
+                return Error.Failure("Book with this id does not exist");
             }
 
-            if (!formulary.TakenBooks.Contains(book))
+            if (formulary.TakenBooks.Count >= 3)
             {
-                return Error.NotFound("This book is not taken by this reader");
+                return Error.Failure("You can't take more than 3 books");
+            }
+
+            if (book.ReaderFormularies.Count >= book.NumberOfCopies)
+            {
+                return Error.Failure("This book is not available");
             }
             formulary.TakenBooks.Add(book);
         }

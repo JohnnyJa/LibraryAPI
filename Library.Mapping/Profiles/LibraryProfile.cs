@@ -20,10 +20,11 @@ public class LibraryProfile : Profile
     {
         CreateMap<Subject, SubjectResponse>();
         CreateMap<Subject, SubjectDTO>();
+        CreateMap<SubjectResponse, SubjectDTO>();
+
         CreateMap<CreateSubjectRequest, Subject>();
         CreateMap<UpdateSubjectRequest, Subject>();
         
-        CreateMap<SubjectResponse, SubjectDTO>();
         CreateMap<CreateSubjectDTO, CreateSubjectRequest>();
         CreateMap<UpdateSubjectDTO, UpdateSubjectRequest>();
         
