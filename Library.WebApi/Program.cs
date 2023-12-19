@@ -8,16 +8,29 @@ using Library.BLL.Commands.Books;
 using Library.Mapping.DAL.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssemblyContaining<CreateBookRequestHandler>());
+
 builder.Services.AddAutoMapper(typeof(LibraryProfile));
+
 builder.Services.AddControllers();
+builder.Services.AddOpenApiDocument();
+
 builder.Services.AddEndpointsApiExplorer();
 var app = builder.Build();
 
+
+if (app.Environment.IsDevelopment())
+{
+
+    app.UseOpenApi();
+    app.UseSwaggerUi();
+}
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
